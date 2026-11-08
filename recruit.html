@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>採用情報 ツムギテクノロジーズ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: 全面キャンバスの糸が動くヒーロー。以降は左右非対称の2カラム。モチーフは「経糸(基盤)と緯糸(データ)」 */
+:root{
+  --bg:#F3F6FA; --bg2:#E7EDF5; --surface:#FFFFFF; --fg:#0E1A2B; --muted:#4A5A72; --line:#C9D4E3;
+  --accent:#007F8A; --on-accent:#FFFFFF; --warm:#B87400;
+  --f-display:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#09121F; --bg2:#0E1A2C; --surface:#122138; --fg:#E8EEF7; --muted:#9BAAC0; --line:#233550;
+    --accent:#3FD0DA; --on-accent:#03232A; --warm:#F2B134; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#09121F; --bg2:#0E1A2C; --surface:#122138; --fg:#E8EEF7; --muted:#9BAAC0; --line:#233550;
+  --accent:#3FD0DA; --on-accent:#03232A; --warm:#F2B134; color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg); color:var(--fg);
+  font-family:var(--f-body); font-size:16px; line-height:1.9;
+  line-break:strict; overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3,p,dl,dd,ul{margin:0;padding:0}
+ul{list-style:none}
+a{color:inherit}
+section{scroll-margin-top:72px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.wrap{
+  width:100%; max-width:1240px; margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.sec{padding-block:clamp(72px,10vw,140px)}
+.eyebrow{
+  font-family:var(--f-mono); font-size:.75rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:12px; margin-bottom:20px;
+}
+.eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+h2{
+  font-family:var(--f-display); font-weight:800; line-height:1.3;
+  font-size:clamp(1.8rem,4.2vw,3.1rem); letter-spacing:.01em; text-wrap:balance;
+}
+h3{font-family:var(--f-display); font-weight:800; font-size:1.3rem; line-height:1.5}
+.muted{color:var(--muted)}
+
+/* ===== header ===== */
+header.site{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo .mark{flex:none;width:30px;height:30px;fill:none;stroke-width:2.4;stroke-linecap:round}
+.logo .mark path:first-child{stroke:var(--accent)}
+.logo .mark path:last-child{stroke:var(--warm)}
+.logo .mark path{stroke-dasharray:1;animation:drawIn 1.6s var(--ease) both}
+.logo .mark path:last-child{animation-delay:.25s}
+.logo b{font-family:var(--f-mono);font-weight:500;letter-spacing:.18em;font-size:.95rem}
+.logo small{font-size:.72rem;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.logo .names{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+nav#nav{display:none}
+nav#nav a{text-decoration:none;font-size:.9rem;position:relative;padding:6px 2px}
+nav#nav a:not(.cta)::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);
+  transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease);
+}
+nav#nav a:not(.cta):hover::after{transform:scaleX(1);transform-origin:left}
+nav#nav a.cta{background:var(--accent);color:var(--on-accent);padding:8px 18px;border-radius:2px;font-weight:700}
+.menu{
+  font:inherit;font-size:.85rem;background:none;color:var(--fg);border:1px solid var(--line);
+  padding:8px 14px;border-radius:2px;cursor:pointer;
+}
+header.site.open nav#nav{
+  display:flex;flex-direction:column;gap:4px;position:absolute;left:0;right:0;top:100%;
+  background:var(--bg);border-bottom:1px solid var(--line);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));
+}
+header.site.open nav#nav a{padding:12px 2px;font-size:1rem}
+header.site.open nav#nav a.cta{text-align:center;margin-top:8px}
+.progress{
+  position:absolute;left:0;bottom:-1px;height:2px;width:100%;transform:scaleX(0);transform-origin:left;
+  background:linear-gradient(90deg,var(--accent),var(--warm));
+}
+@media (min-width:900px){
+  nav#nav{display:flex;align-items:center;gap:28px}
+  .menu{display:none}
+}
+
+/* ===== hero ===== */
+.hero{position:relative;overflow:hidden;padding-block:clamp(56px,9vw,112px) clamp(64px,9vw,120px)}
+.hero canvas{position:absolute;left:0;top:0;pointer-events:none;z-index:0}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(460px circle at var(--mx,72%) var(--my,28%),color-mix(in srgb,var(--accent) 18%,transparent),transparent 70%);
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:90px;z-index:0;pointer-events:none;
+  background:linear-gradient(transparent,var(--bg));
+}
+.hero-inner{position:relative;z-index:1}
+.hero h1{
+  font-family:var(--f-display);font-weight:800;line-height:1.22;letter-spacing:.01em;
+  font-size:clamp(2.5rem,8.2vw,6rem);margin-bottom:28px;
+}
+.hero h1 .ch{display:inline-block;animation:rise .9s var(--ease) both;animation-delay:calc(var(--i) * 55ms + 150ms)}
+.hl{position:relative;display:inline-block}
+.hl::after{
+  content:"";position:absolute;left:0;right:0;bottom:.02em;height:.07em;background:var(--accent);
+  transform-origin:left;animation:underline 1.1s var(--ease) 1.2s both;
+}
+.lead{max-width:34em;font-size:clamp(1rem,1.6vw,1.12rem);color:var(--muted);margin-bottom:36px;animation:fade .9s var(--ease) 1s both}
+.btns{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:56px;animation:fade .9s var(--ease) 1.15s both}
+.btn{
+  display:inline-flex;align-items:center;gap:12px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;
+  padding:15px 26px;border-radius:2px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);
+  transition:transform .3s var(--ease),background .3s;
+}
+.btn .arr{display:inline-block;transition:transform .3s var(--ease)}
+.btn:hover .arr{transform:translateX(6px)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--fg)}
+.meta{display:flex;flex-wrap:wrap;gap:12px 40px;animation:fade .9s var(--ease) 1.3s both}
+.meta dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.meta dd{font-size:.95rem;line-height:1.6}
+
+/* ===== marquee ===== */
+.marquee{border-block:1px solid var(--line);overflow:hidden;background:var(--bg)}
+.track{display:flex;width:max-content;animation:slide 48s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.track span{
+  display:flex;align-items:center;gap:28px;padding:18px 0 18px 28px;
+  font-family:var(--f-mono);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:var(--muted);
+}
+.track span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--warm)}
+
+/* ===== about ===== */
+.about-grid{display:grid;gap:56px;grid-template-columns:1fr}
+.about-grid > *{min-width:0}
+.about p.body{max-width:34em;color:var(--muted)}
+.about p.body + p.body{margin-top:1.2em}
+.weave-defs{margin-top:36px;display:grid;gap:0;border-top:1px solid var(--line)}
+.weave-defs div{display:grid;grid-template-columns:7.5em 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.weave-defs dt{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+.weave-defs dt span{display:block;font-family:var(--f-display);font-size:1.15rem;letter-spacing:0;text-transform:none;font-weight:800}
+.weave-defs div:first-child dt span{color:var(--accent)}
+.weave-defs div:last-child dt span{color:var(--warm)}
+.weave-defs dd{color:var(--muted);font-size:.95rem;line-height:1.8}
+.loom-box{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,3vw,32px);border-radius:4px}
+#loom{display:block;width:100%;height:auto;max-width:100%}
+#loom .warp{stroke:var(--line);stroke-width:1.5}
+#loom .thread{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+#loom .shuttle{fill:var(--warm)}
+.js .draw:not(.in) .dr{stroke-dashoffset:1}
+.dr{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 3.2s var(--ease)}
+.loom-cap{margin-top:14px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+@media (min-width:900px){.about-grid{grid-template-columns:1.05fr .95fr;gap:80px;align-items:center}}
+
+/* ===== services ===== */
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px}
+.sec-head p{max-width:26em;color:var(--muted)}
+.cards{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.card{
+  position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:clamp(24px,3.4vw,40px);min-width:0;transition:border-color .4s,transform .5s var(--ease);
+}
+.card::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--warm));
+  transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease);
+}
+.card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.card:hover::after{transform:scaleX(1)}
+.card .kind{
+  display:flex;justify-content:space-between;gap:12px;margin-bottom:22px;
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+.card .kind b{font-weight:500;color:var(--accent)}
+.card .kind b.weft{color:var(--warm)}
+.card p{color:var(--muted);margin-top:12px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.tags span{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--line);border-radius:2px}
+
+/* ===== numbers ===== */
+.stats-band{background:var(--bg2);border-block:1px solid var(--line)}
+.stats{display:grid;gap:40px 24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.stat{min-width:0}
+.stat .n{font-family:var(--f-display);font-weight:800;line-height:1.1;font-size:clamp(2.8rem,6.4vw,4.6rem);font-variant-numeric:tabular-nums}
+.stat .n small{font-size:.38em;margin-left:.2em;color:var(--accent)}
+.stat p{margin-top:8px;color:var(--muted);font-size:.9rem;line-height:1.7}
+
+/* ===== process ===== */
+.process-grid{display:grid;gap:48px;grid-template-columns:1fr}
+.process-grid > *{min-width:0}
+.sticky-head p{margin-top:20px;max-width:24em;color:var(--muted)}
+.steps{position:relative;padding-left:44px;display:grid;gap:48px}
+.line{position:absolute;left:10px;top:12px;bottom:12px;width:2px;background:var(--line)}
+.fill{position:absolute;inset:0;background:var(--accent);transform:scaleY(0);transform-origin:top}
+.step{position:relative}
+.step .dot{
+  position:absolute;left:-44px;top:6px;width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--line);background:var(--bg);transition:background .4s,border-color .4s,box-shadow .4s;
+}
+.step.on .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 22%,transparent)}
+.step .term{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;color:var(--warm);text-transform:uppercase;margin-bottom:6px}
+.step p{margin-top:8px;color:var(--muted);max-width:32em}
+@media (min-width:900px){
+  .process-grid{grid-template-columns:.8fr 1.2fr;gap:80px}
+  .sticky-head{position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px);align-self:start}
+}
+
+/* ===== works ===== */
+.works{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.work{min-width:0}
+.work-in{
+  height:100%;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:28px;
+  transition:transform .25s var(--ease),border-color .3s;transform-style:preserve-3d;
+}
+.work-in:hover{border-color:var(--accent)}
+.work .who{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.work .big{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,4vw,2.7rem);line-height:1.2;margin:14px 0 4px;font-variant-numeric:tabular-nums}
+.work .big small{font-size:.45em;color:var(--accent);margin-left:.15em}
+.spark{display:block;width:100%;height:84px;margin:14px 0 18px}
+.spark .area{fill:color-mix(in srgb,var(--accent) 14%,transparent);stroke:none}
+.spark .ln{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.spark .end{fill:var(--warm)}
+.work p{color:var(--muted);font-size:.93rem;line-height:1.8}
+
+/* ===== news ===== */
+.news-grid{display:grid;gap:40px;grid-template-columns:1fr}
+.news-grid > *{min-width:0}
+.news li{border-top:1px solid var(--line)}
+.news li:last-child{border-bottom:1px solid var(--line)}
+.news a{
+  display:grid;grid-template-columns:auto auto 1fr auto;gap:8px 20px;align-items:baseline;
+  padding:22px 4px;text-decoration:none;transition:padding .4s var(--ease),background .3s;
+}
+.news a:hover{padding-left:18px;background:var(--bg2)}
+.news time{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.news .tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;padding:2px 10px;border:1px solid var(--accent);color:var(--accent);border-radius:2px;white-space:nowrap}
+.news .ttl{min-width:0}
+.news .go{transition:transform .3s var(--ease);color:var(--accent)}
+.news a:hover .go{transform:translateX(6px)}
+@media (max-width:640px){
+  .news a{grid-template-columns:auto 1fr}
+  .news .ttl{grid-column:1 / -1;order:3}
+  .news .go{display:none}
+}
+@media (min-width:900px){.news-grid{grid-template-columns:.7fr 1.3fr;gap:80px}}
+
+/* ===== careers ===== */
+.careers{position:relative;overflow:hidden;background:var(--accent);color:var(--on-accent)}
+.careers .wrap{position:relative;z-index:1}
+.careers h2{max-width:14em}
+.careers p{max-width:30em;margin:20px 0 32px;opacity:.9}
+.careers .btn{background:var(--on-accent);color:var(--accent);border-color:var(--on-accent)}
+.waves{position:absolute;left:0;bottom:0;width:2400px;height:140px;pointer-events:none;fill:none;stroke:var(--on-accent);stroke-width:1.6;stroke-opacity:.3;animation:wave 26s linear infinite}
+.waves.b{bottom:18px;stroke-opacity:.18;animation-duration:38s;animation-direction:reverse}
+
+/* ===== contact ===== */
+.contact-grid{display:grid;gap:48px;grid-template-columns:1fr}
+.contact-grid > *{min-width:0}
+.info{margin-top:32px;display:grid;gap:18px}
+.info div{display:grid;grid-template-columns:5.5em 1fr;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
+.info dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.info dd{overflow-wrap:anywhere}
+form{display:grid;gap:20px}
+.field{display:grid;gap:8px}
+.field label{font-size:.85rem;font-weight:700}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;color:var(--fg);background:var(--surface);
+  border:1px solid var(--line);border-radius:2px;padding:12px 14px;
+  transition:border-color .3s,box-shadow .3s;
+}
+.field textarea{min-height:140px;resize:vertical;line-height:1.7}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.status{min-height:1.6em;font-size:.9rem;color:var(--accent)}
+form .btn{justify-self:start}
+@media (min-width:900px){.contact-grid{grid-template-columns:.8fr 1.2fr;gap:80px}}
+
+/* ===== footer ===== */
+footer{background:var(--bg2);border-top:1px solid var(--line);padding-block:40px calc(40px + env(safe-area-inset-bottom,0px))}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;font-size:.82rem;color:var(--muted)}
+footer small{font-family:var(--f-mono);letter-spacing:.06em}
+
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:60;
+  transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:2px;font-size:.88rem;
+  max-width:calc(100vw - 32px);transition:opacity .4s,transform .4s var(--ease);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ===== reveal ===== */
+.rv{transition:opacity .9s var(--ease) var(--d,0ms),transform .9s var(--ease) var(--d,0ms)}
+.rv.pre{opacity:.25;transform:translateY(36px)}
+
+/* ===== keyframes ===== */
+@keyframes rise{from{opacity:0;transform:translateY(.55em) rotate(2deg)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes drawIn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes slide{to{transform:translateX(-50%)}}
+@keyframes wave{to{transform:translateX(-1200px)}}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv.pre{opacity:1;transform:none}
+  .track{flex-wrap:wrap;width:auto}
+  .waves{display:none}
+}
+
+/* ===== recruit page additions ===== */
+[hidden]{display:none!important}
+img{max-width:100%}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.chip{
+  font:inherit;font-size:.85rem;padding:8px 18px;border:1px solid var(--line);background:transparent;
+  color:var(--fg);border-radius:2px;cursor:pointer;transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease);
+}
+.chip:hover{border-color:var(--accent);transform:translateY(-2px)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.chip span{font-family:var(--f-mono);font-size:.75rem;margin-left:6px;opacity:.8}
+
+.accs{border-bottom:1px solid var(--line)}
+.acc{border-top:1px solid var(--line)}
+.acc-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;width:100%;
+  padding:24px 4px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer;
+  transition:padding .4s var(--ease),background .3s;
+}
+.acc-head:hover{padding-left:18px;background:var(--bg2)}
+.acc-title{flex:1 1 260px;min-width:0;font-family:var(--f-display);font-weight:800;font-size:1.15rem;line-height:1.5}
+.job-type{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;padding:2px 10px;
+  border:1px solid var(--accent);color:var(--accent);border-radius:2px;white-space:nowrap;
+}
+.job-type.new{border-color:var(--warm);color:var(--warm)}
+.job-pay{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.q{font-family:var(--f-mono);color:var(--accent);margin-right:12px}
+.plus{position:relative;flex:none;width:22px;height:22px;margin-left:auto}
+.plus::before,.plus::after{
+  content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;margin-top:-1px;
+  background:var(--accent);transition:transform .4s var(--ease);
+}
+.plus::after{transform:rotate(90deg)}
+.acc.open .plus::after{transform:rotate(0deg)}
+.acc-body{
+  display:grid;grid-template-rows:0fr;visibility:hidden;
+  transition:grid-template-rows .55s var(--ease),visibility 0s .55s;
+}
+.acc.open .acc-body{grid-template-rows:1fr;visibility:visible;transition-delay:0s}
+.acc-inner{overflow:hidden;min-height:0}
+.acc-pad{padding:8px 4px 36px;max-width:860px}
+.acc-pad > p{color:var(--muted)}
+
+.spec{display:grid;margin:0 0 24px}
+.spec div{display:grid;grid-template-columns:minmax(5.5em,7em) 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.spec dt{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:5px}
+.spec dd{min-width:0;color:var(--muted);font-size:.95rem;line-height:1.85}
+.common{margin-top:40px;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:clamp(20px,3vw,36px)}
+.common h3{margin-bottom:12px}
+.common .spec{margin-bottom:0}
+
+.quote{font-family:var(--f-display);font-weight:600;font-size:1.12rem;line-height:1.85;margin:14px 0 18px}
+.by{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.1em;color:var(--accent)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;line-height:1.7}
+.check input{flex:none;width:18px;height:18px;margin-top:4px;accent-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="site" id="top">
+  <div class="wrap bar">
+    <a class="logo" href="index.php" aria-label="ツムギテクノロジーズ コーポレートサイトへ">
+      <svg class="mark" viewBox="0 0 30 30" aria-hidden="true"><path pathLength="1" d="M3 22C9 2 21 2 27 22"/><path pathLength="1" d="M3 8c6 20 18 20 24 0"/></svg>
+      <span class="names"><b>TSUMUGI</b><small>ツムギテクノロジーズ 採用</small></span>
+    </a>
+    <nav id="nav" aria-label="採用サイトメニュー">
+      <a href="#jobs">募集要項</a>
+      <a href="#benefits">働く環境</a>
+      <a href="#flow">選考フロー</a>
+      <a href="#voices">社員の声</a>
+      <a href="#faq">よくある質問</a>
+      <a class="cta" href="#entry">エントリー</a>
+    </nav>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="nav">メニュー</button>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<main>
+<section class="hero">
+  <canvas id="weave" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Careers / Join Tsumugi</p>
+    <h1 id="headline" aria-label="次の織り手を、探しています。">次の<span class="hl">織り手を、</span><br>探しています。</h1>
+    <p class="lead">基盤を支える人も、データをつなぐ人も。一緒に事業という布を織ってくれる仲間を募集しています。経験者採用と、2027年4月入社の新卒採用を行っています。</p>
+    <div class="btns">
+      <a class="btn" href="#jobs">募集要項を見る <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn ghost" href="#entry">エントリーする</a>
+    </div>
+    <dl class="meta">
+      <div><dt>募集職種</dt><dd>経験者4職種 / 新卒1職種</dd></div>
+      <div><dt>勤務地</dt><dd>東京本社・リモート週3日まで</dd></div>
+      <div><dt>入社時期</dt><dd>随時 / 2027年4月</dd></div>
+      <div><dt>選考期間</dt><dd>最短3週間</dd></div>
+    </dl>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section class="sec" id="jobs">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Open Positions / 募集要項</p>
+        <h2>募集職種</h2>
+      </div>
+      <p>経験者採用4職種と、2027年4月入社の新卒採用を行っています。職種名を選ぶと、詳しい内容が開きます。</p>
+    </div>
+    <div class="chips rv" role="group" aria-label="募集区分で絞り込み">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">すべて<span>5</span></button>
+      <button class="chip" type="button" data-filter="mid" aria-pressed="false">経験者採用<span>4</span></button>
+      <button class="chip" type="button" data-filter="new" aria-pressed="false">新卒採用<span>1</span></button>
+    </div>
+
+    <ul class="accs">
+      <li class="acc job rv" data-type="mid">
+        <button class="acc-head" type="button" id="jh-sre" aria-expanded="false" aria-controls="jb-sre">
+          <span class="job-type">経験者</span>
+          <span class="acc-title">SRE（サイトリライアビリティエンジニア）</span>
+          <span class="job-pay">年収 600〜1,000万円</span>
+          <span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body" id="jb-sre" role="region" aria-labelledby="jh-sre"><div class="acc-inner"><div class="acc-pad">
+          <dl class="spec">
+            <div><dt>仕事内容</dt><dd>お客様向けクラウド基盤の設計、構築、運用を担当します。稼働目標（SLO）の設計、監視とインシデント対応の自動化、障害後の振り返りまで一貫して行います。</dd></div>
+            <div><dt>必須スキル</dt><dd>パブリッククラウド（AWSなど）での運用経験3年以上 / Linuxの基本的な知識</dd></div>
+            <div><dt>歓迎スキル</dt><dd>KubernetesやTerraformによる構成管理 / SLOの運用経験 / オンコール対応の経験</dd></div>
+            <div><dt>配属</dt><dd>クラウド基盤事業部（約60名）</dd></div>
+            <div><dt>給与</dt><dd>年収 600〜1,000万円（経験・能力を考慮して決定）</dd></div>
+          </dl>
+          <button class="btn" type="button" data-apply="SRE">この職種にエントリー <span class="arr" aria-hidden="true">→</span></button>
+        </div></div></div>
+      </li>
+      <li class="acc job rv" data-type="mid">
+        <button class="acc-head" type="button" id="jh-data" aria-expanded="false" aria-controls="jb-data">
+          <span class="job-type">経験者</span>
+          <span class="acc-title">データエンジニア</span>
+          <span class="job-pay">年収 550〜900万円</span>
+          <span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body" id="jb-data" role="region" aria-labelledby="jh-data"><div class="acc-inner"><div class="acc-pad">
+          <dl class="spec">
+            <div><dt>仕事内容</dt><dd>お客様のデータを集めて整えるデータ基盤の設計と構築を担当します。データの取り込み、品質管理、分析チームとAIチームへの提供までを受け持ちます。</dd></div>
+            <div><dt>必須スキル</dt><dd>SQLによるデータ処理の経験3年以上 / Pythonなどでの開発経験</dd></div>
+            <div><dt>歓迎スキル</dt><dd>Kafkaなどのストリーム処理 / dbtの利用経験 / データガバナンスの整備経験</dd></div>
+            <div><dt>配属</dt><dd>データ・AI事業部（約45名）</dd></div>
+            <div><dt>給与</dt><dd>年収 550〜900万円（経験・能力を考慮して決定）</dd></div>
+          </dl>
+          <button class="btn" type="button" data-apply="データエンジニア">この職種にエントリー <span class="arr" aria-hidden="true">→</span></button>
+        </div></div></div>
+      </li>
+      <li class="acc job rv" data-type="mid">
+        <button class="acc-head" type="button" id="jh-pm" aria-expanded="false" aria-controls="jb-pm">
+          <span class="job-type">経験者</span>
+          <span class="acc-title">プロジェクトマネージャー</span>
+          <span class="job-pay">年収 650〜1,100万円</span>
+          <span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body" id="jb-pm" role="region" aria-labelledby="jh-pm"><div class="acc-inner"><div class="acc-pad">
+          <dl class="spec">
+            <div><dt>仕事内容</dt><dd>基幹システムの刷新や連携案件で、計画、進行管理、お客様との調整を担当します。1案件あたり5〜20名のチームを率います。</dd></div>
+            <div><dt>必須スキル</dt><dd>IT案件のPMまたはPLの経験5年以上</dd></div>
+            <div><dt>歓迎スキル</dt><dd>金融、製造、物流いずれかのシステム刷新の経験 / PMPなどの資格</dd></div>
+            <div><dt>配属</dt><dd>SI事業部（約80名）</dd></div>
+            <div><dt>給与</dt><dd>年収 650〜1,100万円（経験・能力を考慮して決定）</dd></div>
+          </dl>
+          <button class="btn" type="button" data-apply="プロジェクトマネージャー">この職種にエントリー <span class="arr" aria-hidden="true">→</span></button>
+        </div></div></div>
+      </li>
+      <li class="acc job rv" data-type="mid">
+        <button class="acc-head" type="button" id="jh-sec" aria-expanded="false" aria-controls="jb-sec">
+          <span class="job-type">経験者</span>
+          <span class="acc-title">セキュリティエンジニア</span>
+          <span class="job-pay">年収 600〜950万円</span>
+          <span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body" id="jb-sec" role="region" aria-labelledby="jh-sec"><div class="acc-inner"><div class="acc-pad">
+          <dl class="spec">
+            <div><dt>仕事内容</dt><dd>ゼロトラストの設計、脆弱性診断、SOC（監視センター）の運用、ISMS認証の取得支援を担当します。</dd></div>
+            <div><dt>必須スキル</dt><dd>ネットワークまたはアプリケーションのセキュリティ実務経験3年以上</dd></div>
+            <div><dt>歓迎スキル</dt><dd>情報処理安全確保支援士、CISSPなどの資格 / ペネトレーションテストの経験</dd></div>
+            <div><dt>配属</dt><dd>セキュリティ事業部（約30名）</dd></div>
+            <div><dt>給与</dt><dd>年収 600〜950万円（経験・能力を考慮して決定）</dd></div>
+          </dl>
+          <button class="btn" type="button" data-apply="セキュリティエンジニア">この職種にエントリー <span class="arr" aria-hidden="true">→</span></button>
+        </div></div></div>
+      </li>
+      <li class="acc job rv" data-type="new">
+        <button class="acc-head" type="button" id="jh-new" aria-expanded="false" aria-controls="jb-new">
+          <span class="job-type new">新卒</span>
+          <span class="acc-title">エンジニア総合職（2027年4月入社）</span>
+          <span class="job-pay">月給 32万円</span>
+          <span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="acc-body" id="jb-new" role="region" aria-labelledby="jh-new"><div class="acc-inner"><div class="acc-pad">
+          <dl class="spec">
+            <div><dt>仕事内容</dt><dd>入社後3か月の研修を経て、適性と希望に合わせてSRE、データ、システム開発のいずれかに配属されます。最初の1年は先輩がペアで付きます。</dd></div>
+            <div><dt>応募資格</dt><dd>2027年3月までに大学、大学院、高専を卒業見込みの方（専攻は問いません）。卒業後3年以内の方も応募できます。</dd></div>
+            <div><dt>歓迎</dt><dd>個人開発、インターン、研究などでプログラミングを経験した方</dd></div>
+            <div><dt>初任給</dt><dd>月給 32万円（固定残業代なし）。賞与は年2回です。</dd></div>
+          </dl>
+          <button class="btn" type="button" data-apply="新卒エンジニア総合職">この職種にエントリー <span class="arr" aria-hidden="true">→</span></button>
+        </div></div></div>
+      </li>
+    </ul>
+
+    <div class="common rv">
+      <h3>共通の募集条件</h3>
+      <dl class="spec">
+        <div><dt>雇用形態</dt><dd>正社員（試用期間3か月、条件は変わりません）</dd></div>
+        <div><dt>勤務地</dt><dd>東京本社（渋谷区・架空）。リモートワークは週3日まで。</dd></div>
+        <div><dt>勤務時間</dt><dd>フレックスタイム制（コアタイム 11:00〜15:00）。標準の労働時間は1日8時間です。</dd></div>
+        <div><dt>休日・休暇</dt><dd>完全週休2日制（土日祝）。年間休日125日。年次有給休暇、夏季休暇、リフレッシュ休暇、慶弔休暇。</dd></div>
+        <div><dt>待遇</dt><dd>各種社会保険完備、通勤手当（月5万円まで）、退職金制度、資格取得支援、学習費補助</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band" id="numbers">
+  <div class="wrap sec">
+    <div class="stats rv" data-stagger>
+      <div class="stat"><div class="n"><span class="num" data-target="33.4" data-dec="1">33.4</span><small>歳</small></div><p>社員の平均年齢</p></div>
+      <div class="stat"><div class="n"><span class="num" data-target="14.2" data-dec="1">14.2</span><small>時間</small></div><p>月平均の残業時間（直近12か月）</p></div>
+      <div class="stat"><div class="n"><span class="num" data-target="82" data-dec="0">82</span><small>%</small></div><p>有給休暇の取得率</p></div>
+      <div class="stat"><div class="n"><span class="num" data-target="100" data-dec="0">100</span><small>%</small></div><p>育児休業の復職率（男女とも）</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="benefits">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Benefits / 働く環境</p>
+        <h2>長く織り続けられる、<br>環境を整えています。</h2>
+      </div>
+      <p>制度は、社員の声をもとに毎年見直しています。</p>
+    </div>
+    <div class="cards" data-stagger>
+      <article class="card rv">
+        <div class="kind"><span>Work style</span><b>働き方</b></div>
+        <h3>リモートワークは週3日まで</h3>
+        <p>フレックスタイム制と組み合わせて、通勤の時間をずらしたり減らしたりできます。コアタイムは11時から15時です。</p>
+        <div class="tags"><span>リモート</span><span>フレックス</span></div>
+      </article>
+      <article class="card rv">
+        <div class="kind"><span>Learning</span><b class="weft">学び</b></div>
+        <h3>学習費は年12万円まで</h3>
+        <p>技術書、オンライン講座、勉強会の参加費を補助します。社内でも毎週、技術共有会を開いています。</p>
+        <div class="tags"><span>技術書</span><span>講座</span><span>勉強会</span></div>
+      </article>
+      <article class="card rv">
+        <div class="kind"><span>Learning</span><b class="weft">学び</b></div>
+        <h3>海外カンファレンスに年2回</h3>
+        <p>参加費と渡航費を会社が負担します。登壇する場合も同じです。</p>
+        <div class="tags"><span>海外</span><span>登壇</span></div>
+      </article>
+      <article class="card rv">
+        <div class="kind"><span>Learning</span><b class="weft">学び</b></div>
+        <h3>資格の受験料は全額支援</h3>
+        <p>受験料に加えて、合格した場合は報奨金を支給します。</p>
+        <div class="tags"><span>AWS認定</span><span>情報処理</span></div>
+      </article>
+      <article class="card rv">
+        <div class="kind"><span>Life</span><b>暮らし</b></div>
+        <h3>育児・介護と両立できる</h3>
+        <p>育児休業は男女とも取得できます。復職後は時短勤務やリモートワークを組み合わせられます。</p>
+        <div class="tags"><span>育休</span><span>介護休暇</span><span>時短</span></div>
+      </article>
+      <article class="card rv">
+        <div class="kind"><span>Life</span><b>暮らし</b></div>
+        <h3>副業は届出で可能</h3>
+        <p>本業に支障がなく、競合しない内容であれば、届出だけで始められます。</p>
+        <div class="tags"><span>副業</span><span>届出制</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="flow" style="padding-top:0">
+  <div class="wrap process-grid">
+    <div class="sticky-head rv">
+      <p class="eyebrow">Selection / 選考フロー</p>
+      <h2>選考は最短<br>3週間で進みます。</h2>
+      <p>面接はすべてオンラインで受けられます。結果は各回、3営業日以内にお知らせします。</p>
+    </div>
+    <div class="steps" id="steps">
+      <div class="line"><div class="fill" id="fill"></div></div>
+      <div class="step"><span class="dot"></span><p class="term">所要 5分</p><h3>エントリー</h3><p>このページのフォームから応募します。カジュアル面談だけの希望も受け付けています。</p></div>
+      <div class="step"><span class="dot"></span><p class="term">約1週間</p><h3>書類選考</h3><p>職務経歴書（新卒の方はエントリーシート）を拝見します。</p></div>
+      <div class="step"><span class="dot"></span><p class="term">各60分 × 2回</p><h3>面接</h3><p>1回目は現場のエンジニアとの技術面接、2回目は事業部長との最終面接です。</p></div>
+      <div class="step"><span class="dot"></span><p class="term">入社まで 1〜3か月</p><h3>内定・入社</h3><p>条件面の説明と、入社日の相談をします。内定後に、配属先の社員と話す機会もあります。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="voices" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <p class="eyebrow">Voices / 社員の声</p>
+        <h2>ここで働く人の言葉。</h2>
+      </div>
+      <p>掲載しているのは、架空の社員のコメントです。</p>
+    </div>
+    <div class="works" data-stagger>
+      <article class="work rv"><div class="work-in">
+        <p class="who">SRE / 入社5年目</p>
+        <p class="quote">障害のあとに開くのは、誰かを責める会議ではなく、仕組みを直す会議です。それがこの会社らしいところだと思います。</p>
+        <p class="by">S.T.</p>
+      </div></article>
+      <article class="work rv"><div class="work-in">
+        <p class="who">データエンジニア / 入社3年目</p>
+        <p class="quote">前職では触れなかった上流の設計を、2年目で任されました。相談すれば、誰かが必ず時間を取ってくれます。</p>
+        <p class="by">M.K.</p>
+      </div></article>
+      <article class="work rv"><div class="work-in">
+        <p class="who">エンジニア総合職 / 入社2年目</p>
+        <p class="quote">文系出身で不安でしたが、3か月の研修で一通り作れるようになりました。同期への質問も、共有して学べる雰囲気です。</p>
+        <p class="by">R.A.</p>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="wrap news-grid">
+    <div class="rv">
+      <p class="eyebrow">FAQ / よくある質問</p>
+      <h2>応募の前に</h2>
+    </div>
+    <ul class="accs rv">
+      <li class="acc">
+        <button class="acc-head" type="button" id="fh-1" aria-expanded="false" aria-controls="fb-1"><span class="acc-title"><span class="q">Q</span>未経験でも応募できますか？</span><span class="plus" aria-hidden="true"></span></button>
+        <div class="acc-body" id="fb-1" role="region" aria-labelledby="fh-1"><div class="acc-inner"><div class="acc-pad"><p>経験者採用は、実務経験のある方が対象です。未経験の方は、卒業後3年以内であれば新卒採用に応募できます。</p></div></div></div>
+      </li>
+      <li class="acc">
+        <button class="acc-head" type="button" id="fh-2" aria-expanded="false" aria-controls="fb-2"><span class="acc-title"><span class="q">Q</span>リモートワークは完全に可能ですか？</span><span class="plus" aria-hidden="true"></span></button>
+        <div class="acc-body" id="fb-2" role="region" aria-labelledby="fh-2"><div class="acc-inner"><div class="acc-pad"><p>週3日までです。入社後1か月は、オンボーディングのため出社を中心にしています。</p></div></div></div>
+      </li>
+      <li class="acc">
+        <button class="acc-head" type="button" id="fh-3" aria-expanded="false" aria-controls="fb-3"><span class="acc-title"><span class="q">Q</span>面接はオンラインで受けられますか？</span><span class="plus" aria-hidden="true"></span></button>
+        <div class="acc-body" id="fb-3" role="region" aria-labelledby="fh-3"><div class="acc-inner"><div class="acc-pad"><p>すべてオンラインで受けられます。最終面接だけ、希望があれば本社でも実施します。</p></div></div></div>
+      </li>
+      <li class="acc">
+        <button class="acc-head" type="button" id="fh-4" aria-expanded="false" aria-controls="fb-4"><span class="acc-title"><span class="q">Q</span>転勤はありますか？</span><span class="plus" aria-hidden="true"></span></button>
+        <div class="acc-body" id="fb-4" role="region" aria-labelledby="fh-4"><div class="acc-inner"><div class="acc-pad"><p>ありません。勤務地は東京本社とリモートワークです。</p></div></div></div>
+      </li>
+      <li class="acc">
+        <button class="acc-head" type="button" id="fh-5" aria-expanded="false" aria-controls="fb-5"><span class="acc-title"><span class="q">Q</span>カジュアル面談だけでも受けられますか？</span><span class="plus" aria-hidden="true"></span></button>
+        <div class="acc-body" id="fb-5" role="region" aria-labelledby="fh-5"><div class="acc-inner"><div class="acc-pad"><p>受けられます。下のフォームで、希望職種に「カジュアル面談のみ」を選んでください。選考には影響しません。</p></div></div></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="entry" style="padding-top:0">
+  <div class="wrap contact-grid">
+    <div class="rv">
+      <p class="eyebrow">Entry / エントリー</p>
+      <h2>まずは、話を<br>聞かせてください。</h2>
+      <dl class="info">
+        <div><dt>受付</dt><dd>24時間（フォームから）</dd></div>
+        <div><dt>返信</dt><dd>3営業日以内にメールでお返事します</dd></div>
+        <div><dt>採用担当</dt><dd>recruit@tsumugi-tech.example</dd></div>
+      </dl>
+    </div>
+    <form class="rv" id="entryForm" novalidate>
+      <div class="field"><label for="f-name">お名前</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="f-mail">メールアドレス</label><input id="f-mail" name="mail" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="f-pos">希望職種</label>
+        <select id="f-pos" name="position">
+          <option value="SRE">SRE（サイトリライアビリティエンジニア）</option>
+          <option value="データエンジニア">データエンジニア</option>
+          <option value="プロジェクトマネージャー">プロジェクトマネージャー</option>
+          <option value="セキュリティエンジニア">セキュリティエンジニア</option>
+          <option value="新卒エンジニア総合職">新卒 エンジニア総合職（2027年4月入社）</option>
+          <option value="カジュアル面談のみ">カジュアル面談のみ希望</option>
+        </select>
+      </div>
+      <div class="field"><label for="f-msg">志望動機・ご質問（任意）</label><textarea id="f-msg" name="msg"></textarea></div>
+      <label class="check" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required><span>個人情報の取り扱いに同意します。</span></label>
+      <button class="btn" type="submit">エントリーする <span class="arr" aria-hidden="true">→</span></button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<section class="careers sec" id="talk">
+  <svg class="waves" id="wavesA" viewBox="0 0 2400 140" aria-hidden="true"></svg>
+  <svg class="waves b" id="wavesB" viewBox="0 0 2400 140" aria-hidden="true"></svg>
+  <div class="wrap">
+    <p class="eyebrow" style="color:inherit">Casual Talk</p>
+    <h2>まずは話を聞きに来ませんか。</h2>
+    <p>選考のないカジュアル面談を、オンラインで毎週開いています。現場のエンジニアが、仕事や働き方の疑問にお答えします。</p>
+    <a class="btn" href="#entry">面談を申し込む <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <small>© 2026 Tsumugi Technologies Inc.</small>
+    <a href="index.php">コーポレートサイトへ戻る</a>
+    <span>このサイトは架空の企業を題材にしたデモです。掲載の社名・待遇・数値・人物はすべて架空のものです。</span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var doc=document.documentElement;
+  doc.classList.add('js');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function $(s,r){return (r||document).querySelector(s)}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
+
+  /* --- headline: split into characters --- */
+  var h1=$('#headline'), idx=0;
+  function split(node){
+    Array.prototype.slice.call(node.childNodes).forEach(function(n){
+      if(n.nodeType===3){
+        var frag=document.createDocumentFragment();
+        Array.from(n.textContent).forEach(function(c){
+          var s=document.createElement('span');
+          s.className='ch'; s.setAttribute('aria-hidden','true');
+          s.style.setProperty('--i',idx++); s.textContent=c; frag.appendChild(s);
+        });
+        node.replaceChild(frag,n);
+      }else if(n.nodeType===1&&n.nodeName!=='BR'){split(n)}
+    });
+  }
+  if(!reduce) split(h1);
+
+  /* --- marquee --- */
+  var words=['SRE','Data Engineer','Project Manager','Security Engineer','New Graduate 2027','Remote 3 days','Flex Time','Casual Talk','Kubernetes','Terraform','Apache Kafka','Zero Trust'];
+  var track=$('#track'), group='';
+  words.forEach(function(t){group+='<span>'+t+'</span>'});
+  track.innerHTML=group+group;
+
+  /* --- waves in the bottom band --- */
+  function wave(amp,period,phase,y){
+    var p='M0 '+y.toFixed(1);
+    for(var x=0;x<=2400;x+=10){p+=' L'+x+' '+(y+amp*Math.sin(2*Math.PI*(x+phase)/period)).toFixed(1)}
+    return p;
+  }
+  $('#wavesA').innerHTML='<path d="'+wave(16,150,0,60)+'"/><path d="'+wave(10,150,40,84)+'"/>';
+  $('#wavesB').innerHTML='<path d="'+wave(22,300,20,70)+'"/>';
+
+  /* --- reveal on scroll --- */
+  $$('[data-stagger]').forEach(function(p){
+    Array.prototype.forEach.call(p.children,function(c,i){c.style.setProperty('--d',(i*90)+'ms')});
+  });
+  var vh=innerHeight;
+  if(!reduce){
+    $$('.rv').forEach(function(el){if(el.getBoundingClientRect().top>vh*0.95)el.classList.add('pre')});
+  }
+  function runCounters(root){
+    if(reduce)return;
+    $$('.num',root).forEach(function(el){
+      var t=parseFloat(el.getAttribute('data-target')), dec=parseInt(el.getAttribute('data-dec')||'0',10), t0=performance.now();
+      (function tick(now){
+        var p=clamp((now-t0)/1500,0,1), e=1-Math.pow(1-p,3);
+        el.textContent=(t*e).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+        if(p<1)requestAnimationFrame(tick);
+      })(t0);
+    });
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var el=e.target;
+      el.classList.remove('pre'); el.classList.add('in');
+      if(el.classList.contains('stats'))runCounters(el);
+      io.unobserve(el);
+    });
+  },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+  $$('.rv').forEach(function(t){io.observe(t)});
+
+  /* --- scroll progress + selection flow line --- */
+  var prog=$('#progress'), steps=$('#steps'), fill=$('#fill'), stepEls=$$('.step'), ticking=false;
+  function update(){
+    ticking=false;
+    var h=doc.scrollHeight-innerHeight;
+    prog.style.transform='scaleX('+(h>0?clamp(scrollY/h,0,1):0)+')';
+    if(steps){
+      var r=steps.getBoundingClientRect(), line=innerHeight*0.62;
+      fill.style.transform='scaleY('+clamp((line-r.top)/r.height,0,1)+')';
+      stepEls.forEach(function(st){
+        var b=$('.dot',st).getBoundingClientRect();
+        st.classList.toggle('on',b.top+b.height/2<line);
+      });
+    }
+  }
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+  addEventListener('resize',update);
+  update();
+
+  /* --- hero canvas: drifting nodes joined by threads --- */
+  var hero=$('.hero'), cv=$('#weave'), ctx=cv.getContext('2d');
+  var W=0,H=0,dpr=1,nodes=[],mouse={x:-9999,y:-9999,on:false},col={a:'#3FD0DA',w:'#F2B134'},frame=0,running=false,visible=true,LINK=130,PULL=170;
+  function readCol(){
+    var cs=getComputedStyle(doc);
+    col.a=cs.getPropertyValue('--accent').trim()||col.a;
+    col.w=cs.getPropertyValue('--warm').trim()||col.w;
+  }
+  function mk(){
+    return {x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:1.2+Math.random()*1.4,w:Math.random()<.12};
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.lineWidth=1;
+    var i,j,a,b,dx,dy,d;
+    ctx.strokeStyle=col.a;
+    for(i=0;i<nodes.length;i++){
+      a=nodes[i];
+      for(j=i+1;j<nodes.length;j++){
+        b=nodes[j]; dx=a.x-b.x; dy=a.y-b.y; d=Math.sqrt(dx*dx+dy*dy);
+        if(d<LINK){ctx.globalAlpha=(1-d/LINK)*.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
+      }
+    }
+    if(mouse.on){
+      ctx.strokeStyle=col.w;
+      for(i=0;i<nodes.length;i++){
+        a=nodes[i]; dx=a.x-mouse.x; dy=a.y-mouse.y; d=Math.sqrt(dx*dx+dy*dy);
+        if(d<PULL){ctx.globalAlpha=(1-d/PULL)*.85;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke()}
+      }
+    }
+    ctx.globalAlpha=.9;
+    for(i=0;i<nodes.length;i++){
+      a=nodes[i]; ctx.fillStyle=a.w?col.w:col.a; ctx.beginPath(); ctx.arc(a.x,a.y,a.r,0,6.2832); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+  function stepNodes(){
+    nodes.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      if(mouse.on){
+        var dx=mouse.x-p.x, dy=mouse.y-p.y, d=Math.sqrt(dx*dx+dy*dy);
+        if(d<PULL&&d>1){p.x+=dx/d*.35;p.y+=dy/d*.35}
+      }
+    });
+  }
+  function loop(){
+    if(!running)return;
+    if(!visible||document.hidden){running=false;return}
+    frame++; if(frame%90===0)readCol();
+    stepNodes(); draw();
+    requestAnimationFrame(loop);
+  }
+  function start(){if(reduce||running)return;running=true;requestAnimationFrame(loop)}
+  function resize(){
+    var r=hero.getBoundingClientRect();
+    W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    cv.style.width=W+'px';cv.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=clamp(Math.round(W*H/17000),26,84);
+    while(nodes.length<n)nodes.push(mk());
+    nodes.length=n;
+    nodes.forEach(function(p){p.x=clamp(p.x,0,W);p.y=clamp(p.y,0,H)});
+    draw();
+  }
+  readCol(); resize();
+  addEventListener('resize',resize);
+  hero.addEventListener('pointermove',function(e){
+    var r=hero.getBoundingClientRect();
+    mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; mouse.on=true;
+    hero.style.setProperty('--mx',mouse.x+'px'); hero.style.setProperty('--my',mouse.y+'px');
+    if(reduce)draw();
+  });
+  hero.addEventListener('pointerleave',function(){mouse.on=false;if(reduce)draw()});
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)start()}).observe(hero);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)start()});
+  new MutationObserver(function(){readCol();draw()}).observe(doc,{attributes:true,attributeFilter:['data-theme']});
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){readCol();draw()});
+  start();
+
+  /* --- tilt on voice cards --- */
+  if(matchMedia('(hover:hover)').matches&&!reduce){
+    $$('.work-in').forEach(function(c){
+      c.addEventListener('pointermove',function(e){
+        var r=c.getBoundingClientRect(), px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+        c.style.transform='perspective(900px) rotateY('+(px*7).toFixed(2)+'deg) rotateX('+(-py*7).toFixed(2)+'deg)';
+      });
+      c.addEventListener('pointerleave',function(){c.style.transform=''});
+    });
+  }
+
+  /* --- menu --- */
+  var hdr=$('header.site'), btn=$('.menu');
+  btn.addEventListener('click',function(){
+    var o=hdr.classList.toggle('open'); btn.setAttribute('aria-expanded',o?'true':'false');
+  });
+  $$('#nav a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('open');btn.setAttribute('aria-expanded','false')})});
+
+  /* --- toast --- */
+  var toast=$('#toast'), tt;
+  function showToast(msg){
+    toast.textContent=msg; toast.classList.add('show'); clearTimeout(tt);
+    tt=setTimeout(function(){toast.classList.remove('show')},2600);
+  }
+
+  /* --- accordions (jobs and FAQ) --- */
+  $$('.acc').forEach(function(a){
+    var h=$('.acc-head',a);
+    h.addEventListener('click',function(){
+      var o=a.classList.toggle('open');
+      h.setAttribute('aria-expanded',o?'true':'false');
+    });
+  });
+
+  /* --- job filter --- */
+  var chips=$$('.chip'), jobs=$$('.job');
+  chips.forEach(function(c){
+    c.addEventListener('click',function(){
+      var f=c.getAttribute('data-filter');
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x===c?'true':'false')});
+      jobs.forEach(function(j){
+        var show=f==='all'||j.getAttribute('data-type')===f;
+        j.hidden=!show;
+        if(show&&!reduce){j.style.animation='none';void j.offsetWidth;j.style.animation='fade .6s var(--ease) both'}
+      });
+    });
+  });
+
+  /* --- apply buttons: preselect the position in the form --- */
+  $$('[data-apply]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-apply');
+      $('#f-pos').value=v;
+      $('#entry').scrollIntoView({behavior:reduce?'auto':'smooth'});
+      showToast('希望職種に「'+v+'」を選びました。');
+      setTimeout(function(){$('#f-name').focus({preventScroll:true})},reduce?0:700);
+    });
+  });
+
+  /* --- entry form (demo only) --- */
+  var form=$('#entryForm'), status=$('#status');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){form.reportValidity();status.textContent='未入力の項目があります。';return}
+    status.textContent='入力を確認しました。架空のサイトのため、内容はどこにも送信されません。';
+    form.reset();
+  });
+})();
+</script>
+</body>
+</html>
